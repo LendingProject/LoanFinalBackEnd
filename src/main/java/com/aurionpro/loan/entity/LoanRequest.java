@@ -29,8 +29,8 @@ public class LoanRequest {
 	@Column(name="loan_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@Column(name="amount")
-	private double amount;
+	@Column(name="repayamount")
+	private double repayamount;;
 	@Column(name="loanamount")
 	private double loanamount;
 	@Column(name="time")

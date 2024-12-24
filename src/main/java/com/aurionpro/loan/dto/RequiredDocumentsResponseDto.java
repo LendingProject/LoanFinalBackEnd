@@ -10,10 +10,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Data
 public class RequiredDocumentsResponseDto {
-	private int loanId;
-	private String documentOneLink;
+//	private int loanId;
+//	private String documentOneLink;
+//	
+//	private String documentTwoLink;
+//	
+//	private String documentThreeLink;
 	
-	private String documentTwoLink;
-	
-	private String documentThreeLink;
+    private int DocumentId;
+    private String documentOneLink;
+  
+
+    private String status;
+    private String message;
 }
