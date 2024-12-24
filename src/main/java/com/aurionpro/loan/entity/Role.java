@@ -25,10 +25,11 @@ public class Role {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	
 	private int roleId;
-	@Column(name="roleName")
-	private String roleName;
+
+	@Column(name="role_name")
+	private String role;
 	
-	@OneToMany(mappedBy="role", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-	private List<Login> login;
+	
+
 
 }

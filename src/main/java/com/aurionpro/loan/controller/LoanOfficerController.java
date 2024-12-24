@@ -53,4 +53,14 @@ public class LoanOfficerController {
 //    	return ResponseEntity.ok(loanOfficerService.updateLoanOfficerProfile(officerId, dto));
 //    	
 //    }
+    
+    @PostMapping("/loanofficer")
+	public ResponseEntity<LoanOfficerResponseDto> AddLoanOfficer(@RequestBody RegistrationDto registrationDto) {
+	    return ResponseEntity.ok(loanOfficerService.addLoanOfficer(registrationDto));
+	}
+	
+	@PutMapping("/deletelaonofficer")
+	public ResponseEntity<LoanOfficerResponseDto> deleteLoanOfficer(@RequestParam int id){
+		return  ResponseEntity.ok(loanOfficerService.deleteLoanOfficer(id));
+	}
 }

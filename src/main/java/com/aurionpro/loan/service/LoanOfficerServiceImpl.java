@@ -3,14 +3,15 @@ package com.aurionpro.loan.service;
 import com.aurionpro.loan.dto.*;
 import com.aurionpro.loan.entity.*;
 import com.aurionpro.loan.repository.*;
-import com.aurionpro.loan.service.LoanOfficerService;
+
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
+
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,6 +31,10 @@ public class LoanOfficerServiceImpl implements LoanOfficerService {
     @Autowired
     private EnquiryRepository enquiryRepository;
 
+	@Autowired
+	private RoleRepository roleRepo;
+	@Autowired
+	private LoginRepository loginRepo;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -153,6 +158,48 @@ public class LoanOfficerServiceImpl implements LoanOfficerService {
 //		LoanOfficer updateOfficer=loanOfficerRepository.save(officer);
 //		
 //		return modelMapper.map(updateOfficer, LoanOfficerProfileUpdateResponseDto.class);
+	
+	
+
+	@Override
+	public LoanOfficerResponseDto addLoanOfficer(RegistrationDto registrationDto) {
+		Login login = new Login();
+		
+		login.setUsername(registrationDto.getUsername());
+		login.setPassword(registrationDto.getPassword());
+		List<Role>  roles  = new ArrayList<>();
+		Role role = roleRepo.findByRole("ROLE_LOANOFFICER").get();
+		roles.add(role);
+		login.setRoles(roles);
+		
+		LoanOfficer loanOfficer = new LoanOfficer();
+		loanOfficer.setEmail(registrationDto.getUsername());
+		loanOfficer.setContactNumber(registrationDto.getContactNumber());
+		loanOfficer.setFirstName(registrationDto.getFirstName());
+		loanOfficer.setLastName(registrationDto.getLastName());
+		loanOfficer.setGender(registrationDto.getGender());
+		loanOfficer.setPancardNumber(registrationDto.getPancardNumber());
+		loanOfficer.setDob(registrationDto.getDob());
+		loanOfficer.setLogin(login);
+		
+		login.setLoanOfficer(loanOfficer);
+		loginRepo.save(login);
+		
+		
+		return modelMapper.map(loanOfficer, LoanOfficerResponseDto.class);
+	}
+	
+	@Override
+	public LoanOfficerResponseDto deleteLoanOfficer(int officerId) {
+	Optional<LoanOfficer> optionalLoanOfficer = loanOfficerRepository.findById(officerId);
+	if(optionalLoanOfficer.isEmpty())
+		throw new RuntimeException("Cannot find LoanOfficer with  Id: "+officerId);
+	
+	LoanOfficer dbLaonOfficer = optionalLoanOfficer.get();
+	dbLaonOfficer.setDeleted(true);
+	loanOfficerRepository.save(dbLaonOfficer);
+		return modelMapper.map(dbLaonOfficer, LoanOfficerResponseDto.class);
+	}
 	}
 	
 	

@@ -11,9 +11,11 @@ import com.aurionpro.loan.dto.EnquiryResponseDto;
 import com.aurionpro.loan.dto.LoanRequestDto;
 import com.aurionpro.loan.dto.LoanResponseDto;
 import com.aurionpro.loan.dto.LoanSchemeResponseDto;
+import com.aurionpro.loan.dto.PageResponse;
 import com.aurionpro.loan.dto.PageResponseDto;
 import com.aurionpro.loan.dto.RequiredDocumentsRequestDto;
 import com.aurionpro.loan.dto.RequiredDocumentsResponseDto;
+import com.aurionpro.loan.dto.UserAdminViewResponse;
 import com.aurionpro.loan.dto.UserRequestDto;
 import com.aurionpro.loan.dto.UserResponseDto;
 
@@ -41,7 +43,10 @@ UserResponseDto addUser(UserRequestDto userRequestDto);
 
 	RequiredDocumentsResponseDto uploadFile(MultipartFile file) throws IOException;
 
-	
+	PageResponse<UserAdminViewResponse> getAllUser(int pageSize ,int pageNumber);
+	PageResponse<UserAdminViewResponse> getUserByFirstName(int pageSize ,int pageNumber ,String firstName);
+	UserAdminViewResponse getUserByEmail(String email);
+	UserAdminViewResponse getUserById(int Id);
 	
 	
 	

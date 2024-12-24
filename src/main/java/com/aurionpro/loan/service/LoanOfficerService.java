@@ -12,12 +12,17 @@ import com.aurionpro.loan.dto.LoanOfficerResponseDto;
 import com.aurionpro.loan.dto.LoanRequestDto;
 import com.aurionpro.loan.dto.LoanResponseDto;
 import com.aurionpro.loan.dto.PageResponse;
+import com.aurionpro.loan.dto.RegistrationDto;
 import com.aurionpro.loan.dto.RejectionRemarkRequestDto;
 import com.aurionpro.loan.dto.RejectionRemarkResponseDto;
 import com.aurionpro.loan.dto.ReplyEnquiryRequestDto;
 import com.aurionpro.loan.dto.ReplyEnquiryResponseDto;
 
 public interface LoanOfficerService {
+	
+	LoanOfficerResponseDto  addLoanOfficer(RegistrationDto registrationDto);
+	LoanOfficerResponseDto  deleteLoanOfficer(int officerId);
+	
 	
 	 PageResponse<LoanResponseDto> viewLoanRequests(int officerId, int pageNumber, int pageSize);
 	

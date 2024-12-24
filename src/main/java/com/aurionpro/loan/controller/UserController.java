@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,9 +20,11 @@ import com.aurionpro.loan.dto.EnquiryResponseDto;
 import com.aurionpro.loan.dto.LoanRequestDto;
 import com.aurionpro.loan.dto.LoanResponseDto;
 import com.aurionpro.loan.dto.LoanSchemeResponseDto;
+import com.aurionpro.loan.dto.PageResponse;
 import com.aurionpro.loan.dto.PageResponseDto;
 import com.aurionpro.loan.dto.RequiredDocumentsRequestDto;
 import com.aurionpro.loan.dto.RequiredDocumentsResponseDto;
+import com.aurionpro.loan.dto.UserAdminViewResponse;
 import com.aurionpro.loan.dto.UserRequestDto;
 import com.aurionpro.loan.dto.UserResponseDto;
 import com.aurionpro.loan.service.UserService;
@@ -34,9 +37,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	
-	@Autowired
-	private UserServiceImpl userImpl;
+
 	
 	
 	  
@@ -72,13 +73,13 @@ public class UserController {
 	
 	
 	@GetMapping("/loanschemes")
-	public ResponseEntity<PageResponseDto<LoanSchemeResponseDto>> getAllLoanScheme(@RequestParam int pageSize,@RequestParam int pageNumber){ 
+	public ResponseEntity<PageResponseDto<LoanSchemeResponseDto>> getAllLoanSchemeOfUser(@RequestParam int pageSize,@RequestParam int pageNumber){ 
 		   
 		  return ResponseEntity.ok(userService.getAllLoanScheme(pageNumber, pageSize)); 
 		 }
 	
 	@PostMapping("/addloan")
-	private ResponseEntity<LoanResponseDto> applyLoan(@RequestBody LoanRequestDto loanRequestDto,@RequestParam("file") MultipartFile file){
+	private ResponseEntity<LoanResponseDto> applyLoan(@RequestBody LoanRequestDto loanRequestDto){
 	     
 	     return ResponseEntity.ok(userService.applyLoan(loanRequestDto));
 		
@@ -110,7 +111,33 @@ public class UserController {
 		   
 		  return ResponseEntity.ok(userService.getAllQueries(pageNumber, pageSize)); 
 		 }
-	
+
+    @GetMapping("/users")
+    public ResponseEntity<PageResponse<UserAdminViewResponse>> getAllUsers(@RequestParam(defaultValue = "0") int pageNumber,
+                                                                           @RequestParam(defaultValue = "10") int pageSize) {
+        PageResponse<UserAdminViewResponse> response = userService.getAllUser(pageSize, pageNumber);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/users/search")
+    public ResponseEntity<PageResponse<UserAdminViewResponse>> getUsersByFirstName(@RequestParam(defaultValue = "0") int pageNumber,
+                                                                                   @RequestParam(defaultValue = "10") int pageSize,
+                                                                                   @RequestParam String firstName) {
+        PageResponse<UserAdminViewResponse> response = userService.getUserByFirstName(pageSize, pageNumber, firstName);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/users/email")
+    public ResponseEntity<UserAdminViewResponse> getUserByEmail(@RequestParam String email) {
+        UserAdminViewResponse response = userService.getUserByEmail(email);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/users/{id}")
+    public ResponseEntity<UserAdminViewResponse> getUserById(@PathVariable int id) {
+        UserAdminViewResponse response = userService.getUserById(id);
+        return ResponseEntity.ok(response);
+    }
  
 
 }

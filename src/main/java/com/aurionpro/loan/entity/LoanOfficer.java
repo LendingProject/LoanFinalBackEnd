@@ -11,6 +11,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -33,6 +34,8 @@ public class LoanOfficer {
 	private String lastName;
 	@Column(name="pancardNumber")
 	private String pancardNumber;
+	@Column(name="email")
+	private String email;
 	@Column(name="dob")
 	private Date dob;
 	@Column(name="contactNumber")
@@ -50,6 +53,8 @@ public class LoanOfficer {
 	@OneToMany(mappedBy = "loanofficerremarks",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 	private List<RejectionRemark> rejectionRemarks;
 	
-	
+	 @OneToOne
+	    @JoinColumn(name = "login_id", nullable = false)
+	    private Login login;
 	
 }

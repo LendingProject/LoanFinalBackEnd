@@ -13,6 +13,7 @@ public class LoanResponseDto {
 	 private int loanid; // ID of the loan
 	    private int user_id; // User ID
 	    private int loanscheme_id; // Loan scheme ID
+		private int loanOfficeId;
 	    private double totalRepayAmount; // The total amount to be repaid
 	    private double loanamount; // The loan amount
 	    private int time; // The loan duration
