@@ -17,4 +17,5 @@ public class LoanSchemeResponseDto {
 	private double minamount;
 
 	private double interest;
+	private boolean isdelete;
 }

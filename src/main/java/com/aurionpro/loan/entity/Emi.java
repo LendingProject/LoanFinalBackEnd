@@ -24,7 +24,7 @@ public class Emi {
 	@Id
 	@Column(name="emi_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 	@Column(name="amount")
 	private double amount;
 	@Column(name="date")

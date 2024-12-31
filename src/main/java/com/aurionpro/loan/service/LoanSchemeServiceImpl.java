@@ -32,6 +32,7 @@ public class LoanSchemeServiceImpl implements LoanSchemeService{
     @Override
 	public LoanSchemeResponseDto addLoanScheme(LoanSchemeRequestDto loanSchemeRequestDto) {
 		 LoanScheme loanScheme = modelMapper.map(loanSchemeRequestDto, LoanScheme.class);
+		 loanScheme.setIsdeleted(false);
 	        LoanScheme savedLoanScheme = loanSchemeRepository.save(loanScheme);
 	        return modelMapper.map(savedLoanScheme, LoanSchemeResponseDto.class);
 	}
@@ -46,8 +47,10 @@ public class LoanSchemeServiceImpl implements LoanSchemeService{
 		List<LoanScheme> dbLoanScehme =  pageScheme.getContent();	
 		List<LoanSchemeResponseDto> loanSchemes =  new ArrayList<>();
 		dbLoanScehme.forEach((loanScheme)->{
-			LoanSchemeResponseDto loanSchemeResponseDto = modelMapper.map(loanScheme, LoanSchemeResponseDto.class);
-			loanSchemes.add(loanSchemeResponseDto);
+			LoanSchemeResponseDto response = modelMapper.map(loanScheme, LoanSchemeResponseDto.class);
+
+			   response.setIsdelete(loanScheme.isIsdeleted());
+			loanSchemes.add(response);
 		});
 		PageResponse<LoanSchemeResponseDto> response =  new PageResponse<LoanSchemeResponseDto>(); 
 		response.setContents(loanSchemes);
@@ -68,29 +71,42 @@ public class LoanSchemeServiceImpl implements LoanSchemeService{
 		if(optionalLoanScheme.isEmpty())
 			throw new RuntimeException("Cannot find LoanScheme with  Id: "+loanSchemeId);
 		
-		LoanScheme dbLoanScheme = optionalLoanScheme.get();
-		dbLoanScheme.setDeleted(true);
-			return modelMapper.map(dbLoanScheme, LoanSchemeResponseDto.class);
+		 LoanScheme dbLoanScheme = optionalLoanScheme.get();
+
+		 
+		 
+		 dbLoanScheme.setIsdeleted(!dbLoanScheme.isIsdeleted());
+	    loanSchemeRepository.save(dbLoanScheme);
+	   
+	    LoanSchemeResponseDto response = modelMapper.map(dbLoanScheme, LoanSchemeResponseDto.class);
+
+	   response.setIsdelete(dbLoanScheme.isIsdeleted());
+
+	    return response;
+	    
+			
+	    
 	}
 
 	@Override
-	public LoanSchemeResponseDto updateLoanScheme(UpdateLoanSchemeDto updateLoanSchemeDto) {
-		Optional<LoanScheme> optionalLoanScheme = loanSchemeRepository.findById(updateLoanSchemeDto.getLoanSchemeId());
+	public LoanSchemeResponseDto updateLoanScheme(UpdateLoanSchemeDto updateLoanSchemeDto,int id) {
+		Optional<LoanScheme> optionalLoanScheme = loanSchemeRepository.findById(id);
 		if(optionalLoanScheme.isEmpty())
-			throw new RuntimeException("Cannot find LoanScheme with  Id: "+updateLoanSchemeDto.getLoanSchemeId());
+			throw new RuntimeException("Cannot find LoanScheme with  Id: "+id);
 		
 		LoanScheme dbLoanScheme = optionalLoanScheme.get();
 		
-		if(updateLoanSchemeDto.getField().equals("schemename")) 
-			dbLoanScheme.setSchemename(updateLoanSchemeDto.getSchemename());	
-		if(updateLoanSchemeDto.getField().equals("maxamount")) 
-			dbLoanScheme.setMaxamount(updateLoanSchemeDto.getMaxamount());	
+		dbLoanScheme.setInterest(updateLoanSchemeDto.getInterest());
+		dbLoanScheme.setMaxamount(updateLoanSchemeDto.getMaxamount());
+		dbLoanScheme.setMinamount(updateLoanSchemeDto.getMinamount());
+		dbLoanScheme.setSchemename(updateLoanSchemeDto.getSchemename());
 		
-		if(updateLoanSchemeDto.getField().equals("minamount")) 
-			dbLoanScheme.setMinamount(updateLoanSchemeDto.getMinamount());	
-		if(updateLoanSchemeDto.getField().equals("interest")) 
-			dbLoanScheme.setInterest(updateLoanSchemeDto.getInterest());	
-		return modelMapper.map(dbLoanScheme, LoanSchemeResponseDto.class);
+		loanSchemeRepository.save(dbLoanScheme);
+		LoanSchemeResponseDto dto =  new LoanSchemeResponseDto();
+		dto.setSchemeId(id);
+		dto=modelMapper.map(dbLoanScheme, LoanSchemeResponseDto.class);
+		
+		return dto;
 	}
 
 	@Override
@@ -112,5 +128,18 @@ public class LoanSchemeServiceImpl implements LoanSchemeService{
 		response.setTotalPages(pageScheme.getTotalPages());
 		
 		return response;
+	}
+
+
+
+
+	@Override
+	public LoanSchemeResponseDto getloanScehmeById(int id) {
+		Optional<LoanScheme> loanSchemeOptional = loanSchemeRepository.findById(id); 
+		if(loanSchemeOptional.isEmpty())
+			throw new RuntimeException("Cannot find LoanScheme with  Id: "+id);
+		LoanScheme dbLoanScheme = loanSchemeOptional.get();
+		return modelMapper.map(dbLoanScheme, LoanSchemeResponseDto.class);
+
 	}
 }

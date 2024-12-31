@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class LoanOfficerServiceImpl implements LoanOfficerService {
     @Autowired
     private EnquiryRepository enquiryRepository;
 
+    private PasswordEncoder passwordEncoder;
 	@Autowired
 	private RoleRepository roleRepo;
 	@Autowired
@@ -166,7 +168,7 @@ public class LoanOfficerServiceImpl implements LoanOfficerService {
 		Login login = new Login();
 		
 		login.setUsername(registrationDto.getUsername());
-		login.setPassword(registrationDto.getPassword());
+		login.setPassword(passwordEncoder.encode(registrationDto.getPassword()) );
 		List<Role>  roles  = new ArrayList<>();
 		Role role = roleRepo.findByRole("ROLE_LOANOFFICER").get();
 		roles.add(role);
@@ -179,6 +181,7 @@ public class LoanOfficerServiceImpl implements LoanOfficerService {
 		loanOfficer.setLastName(registrationDto.getLastName());
 		loanOfficer.setGender(registrationDto.getGender());
 		loanOfficer.setPancardNumber(registrationDto.getPancardNumber());
+		loanOfficer.setEmail(login.getUsername());
 		loanOfficer.setDob(registrationDto.getDob());
 		loanOfficer.setLogin(login);
 		

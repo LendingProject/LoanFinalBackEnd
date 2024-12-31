@@ -13,12 +13,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Data
 public class UpdateLoanSchemeDto {
-	    @NotNull
-	    @NotBlank
-		private int loanSchemeId;
-		@NotNull
-		@NotBlank(message = "Field to cahmge cannot be blank")
-		private String field;
 		@NotNull(message = "Scheme name cannot be null")
 	    @Size(min = 3, max = 100, message = "Scheme name must be between 3 and 100 characters")
 	    private String schemename;

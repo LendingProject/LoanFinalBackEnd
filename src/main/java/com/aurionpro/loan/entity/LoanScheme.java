@@ -33,7 +33,7 @@ public class LoanScheme {
 	@Column(name="interest")
 	private double interest;
 	@Column(name="deleted")
-	private boolean deleted;
+	private boolean isdeleted;
 	
 	@OneToMany(mappedBy = "loanscheme",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 	private List<LoanRequest> loanrequest;

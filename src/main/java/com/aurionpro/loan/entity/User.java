@@ -59,10 +59,12 @@ public class User {
 	    @JoinColumn(name = "login_id", nullable = false)
 	    private Login login;
 	
+	 @OneToMany(mappedBy = "user",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+	 private List<MissedPayment> missedpayments;
 	
 	
-	
-	
+	 @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	 private List<NPA> npaList;
 	
 	
 	

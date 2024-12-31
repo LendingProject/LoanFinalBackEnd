@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/loanofficers")
+@RequestMapping("/loanapp")
+@CrossOrigin(origins = "http://localhost:4200")
 public class LoanOfficerController {
 
     @Autowired
@@ -63,4 +64,6 @@ public class LoanOfficerController {
 	public ResponseEntity<LoanOfficerResponseDto> deleteLoanOfficer(@RequestParam int id){
 		return  ResponseEntity.ok(loanOfficerService.deleteLoanOfficer(id));
 	}
+	
+	  
 }

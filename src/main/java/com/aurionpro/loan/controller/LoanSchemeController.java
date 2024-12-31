@@ -3,6 +3,7 @@ package com.aurionpro.loan.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import com.aurionpro.loan.service.LoanSchemeService;
 
 @RestController
 @RequestMapping("/loanapp")
+@CrossOrigin(origins = "http://localhost:4200")
 public class LoanSchemeController {
 
 	@Autowired
@@ -32,6 +34,11 @@ public class LoanSchemeController {
 	        LoanSchemeResponseDto response = service.addLoanScheme(loanSchemeRequestDto);
 	        return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	    }
+		  @GetMapping("/loanschemes/{Id}")
+		    public ResponseEntity<LoanSchemeResponseDto> getLoanSchemeById(@PathVariable int Id) {
+		        LoanSchemeResponseDto response = service.getloanScehmeById(Id);
+		        return ResponseEntity.ok(response);
+		    }
 
 	    @DeleteMapping("/loanschemes/{loanSchemeId}")
 	    public ResponseEntity<LoanSchemeResponseDto> deleteLoanScheme(@PathVariable int loanSchemeId) {
@@ -39,9 +46,9 @@ public class LoanSchemeController {
 	        return ResponseEntity.ok(response);
 	    }
 
-	    @PutMapping("/loanschemes")
-	    public ResponseEntity<LoanSchemeResponseDto> updateLoanScheme(@RequestBody UpdateLoanSchemeDto updateLoanSchemeDto) {
-	        LoanSchemeResponseDto response = service.updateLoanScheme(updateLoanSchemeDto);
+	    @PutMapping("/loanschemes/{id}")
+	    public ResponseEntity<LoanSchemeResponseDto> updateLoanScheme(@RequestBody UpdateLoanSchemeDto updateLoanSchemeDto, @PathVariable  int id) {
+	        LoanSchemeResponseDto response = service.updateLoanScheme(updateLoanSchemeDto, id );
 	        return ResponseEntity.ok(response);
 	    }
 

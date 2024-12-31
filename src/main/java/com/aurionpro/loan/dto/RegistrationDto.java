@@ -36,6 +36,7 @@ public class RegistrationDto {
 	@NotNull
 	@NotBlank
 	private String pancardNumber;
+	
 	@NotNull
 	@NotBlank
 	private Date dob;
